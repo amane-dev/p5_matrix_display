@@ -9,9 +9,7 @@ function setup() {
     var x = 0;
     for (var i = 0; i <= width / symbolSize; i++) {
         var stream = new Stream();
-        // stream.generateSymbols(x, random(-2000, 0));
-        // stream.generateSymbols(x, random(window.innerHeight, window.innerHeight + 2000));
-        stream.generateSymbols(x, random(window.innerHeight, window.innerHeight + 2000));
+        stream.generateSymbols(x, random(-2000, 0));
         streams.push(stream);
         x += symbolSize;
     }
@@ -52,9 +50,7 @@ function Symbol(x, y, speed, first, opacity) {
     };
 
     this.rain = function () {
-        // this.y = this.y >= height ? 0 : (this.y += this.speed);
-        // this.y = this.y >= height ? 0 : (this.y -= this.speed);
-        this.y = this.y < 0 ? height : (this.y -= this.speed);
+        this.y = this.y >= height ? 0 : (this.y += this.speed);
     };
 }
 
@@ -71,8 +67,7 @@ function Stream() {
             symbol.setToRandomSymbol();
             this.symbols.push(symbol);
             opacity -= 255 / this.totalSymbols / fadeInterval;
-            // y -= symbolSize;
-            y += symbolSize;
+            y -= symbolSize;
             first = false;
         }
     };
