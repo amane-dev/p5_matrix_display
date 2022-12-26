@@ -1,6 +1,7 @@
 var streams = [];
 var fadeInterval = 1.6;
 var symbolSize = 14;
+var speedFactor = 1;
 
 function setup() {
     createCanvas(window.innerWidth, window.innerHeight);
@@ -25,6 +26,17 @@ function draw() {
     streams.forEach(function (stream) {
         stream.render();
     });
+}
+
+function mouseWheel(evt){
+    console.log(">> mouseWheel", evt.deltaY);
+    // speedFactor += evt.deltaY > 0 ? .1 : -0.5;
+
+    speedFactor = map(evt.deltaY, -10, 10, -1.5, 1.5)
+    // speedFactor = evt.deltaY < 0 ? -1 : 1;
+
+    console.log("<< speedFactor", speedFactor);
+    speedFactor = constrain(speedFactor, -1.3, 1.2);
 }
 
 function Symbol(x, y, speed, first, opacity) {
@@ -54,14 +66,16 @@ function Symbol(x, y, speed, first, opacity) {
     this.rain = function () {
         // this.y = this.y >= height ? 0 : (this.y += this.speed);
         // this.y = this.y >= height ? 0 : (this.y -= this.speed);
-        this.y = this.y < 0 ? height : (this.y -= this.speed);
+        // this.y = this.y < 0 ? height : (this.y -= this.speed);
+        this.y = this.y < 0 ? height : (this.y -= (this.speed * speedFactor));
     };
 }
 
 function Stream() {
     this.symbols = [];
     this.totalSymbols = round(random(5, 35));
-    this.speed = random(5, 22);
+    // this.speed = random(5, 22) * speedFactor;
+    this.speed = random(5, 22) * speedFactor;
 
     this.generateSymbols = function (x, y) {
         var opacity = 255;
